@@ -1,0 +1,5 @@
+C:\Users\codingtemple\Documents\Visual Studio 2015\Projects\Library_Card_Catalog\Library_Card_Catalog\obj\x86\Debug\Library_Card_Catalog.exe
+C:\Users\codingtemple\Documents\Visual Studio 2015\Projects\Library_Card_Catalog\Library_Card_Catalog\bin\Debug\Library_Card_Catalog.exe
+C:\Users\codingtemple\Documents\Visual Studio 2015\Projects\Library_Card_Catalog\Library_Card_Catalog\bin\Debug\Library_Card_Catalog.pdb
+C:\Users\codingtemple\Documents\Visual Studio 2015\Projects\Library_Card_Catalog\Library_Card_Catalog\obj\x86\Debug\Library_Card_Catalog.csprojResolveAssemblyReference.cache
+C:\Users\codingtemple\Documents\Visual Studio 2015\Projects\Library_Card_Catalog\Library_Card_Catalog\obj\x86\Debug\Library_Card_Catalog.pdb
