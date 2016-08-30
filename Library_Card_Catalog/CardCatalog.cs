@@ -29,12 +29,27 @@ namespace Library_Card_Catalog
         /// </remarks>
         public void ListBooks()
         {
-            foreach (Book b in books)
+            if (books.Count > 0)
             {
-                //Read trough each book oject in the list and print the appropriate information about the book
-                Console.Write("\nTitle: {0}\nAuthor: {1}\nGenre: {2}\n# of Pages: {3}\nYear: {4}", b.Title, b.Author, b.Genre, b.NumPages, b.YearPublished);
-                Console.WriteLine();
+                Console.WriteLine("\n{0} books", books.Count);
+                foreach (Book b in books)
+                {
+                    //call the PrintBook method on each individual book
+                    PrintBook(b);
+                }
+            }else
+            {
+                Console.WriteLine("There are 0 books in the list");
             }
+        }
+
+        /// <summary>
+        ///     PrintBook is a method in the CardCatalog class.
+        /// </summary>
+        /// <param name="b"></param>
+        public void PrintBook(Book b)
+        {
+            Console.WriteLine("\nTitle: {0}\nAuthor: {1}\nGenre: {2}\n# of Pages: {3}\nYear: {4}", b.Title, b.Author, b.Genre, b.NumPages, b.YearPublished);
         }
 
         /// <summary>
@@ -69,22 +84,52 @@ namespace Library_Card_Catalog
         }
 
         /// <summary>
-        ///     SaveAndExit is a method in the CardCatalog class.
+        ///     SearchBook is a static method in the CardCatalog class.
+        /// </summary>
+        /// <param name="bookList"></param>
+        /// <param name="bookTitle"></param>
+        public void SearchBookList(string bookTitle)
+        {
+            List<Book> foundBooks = new List<Book>() ;
+
+            for(int i = 0; i < books.Count; i++)
+            {
+                if (books[i].Title == bookTitle)
+                {
+                    foundBooks.Add(books[i]);
+
+                    // alternate method
+                    //PrintBook(books[i]);
+                }
+            }
+
+            Console.WriteLine("\n{0} books found\n", foundBooks.Count);
+            foreach (Book b in foundBooks)
+            {
+                PrintBook(b);
+            }
+
+        }
+
+        /// <summary>
+        ///     Save is a method in the CardCatalog class.
         /// </summary>
         /// <param name="path">Path of the current directory + file name</param>
         /// <param name="formatter"></param>
         /// <remarks>
         ///     Serialiazes the Book List (List<Book>) and writes it to the file given in the path.
         /// </remarks>
-        public void SaveAndExit(string path, IFormatter formatter)
+        public void Save(string path, IFormatter formatter)
         {
             try
             {
-                FileStream writeStream = new FileStream(path, FileMode.Open, FileAccess.Write);
-                formatter.Serialize(writeStream, this.books);
+                using (FileStream writeStream = new FileStream(path, FileMode.Open, FileAccess.Write))
+                {
+                    formatter.Serialize(writeStream, this.books);
 
-                // Closes the file stream
-                writeStream.Close();
+                    // Closes the file stream
+                    writeStream.Close();
+                }
             }
             catch (IOException)
             {
@@ -103,15 +148,18 @@ namespace Library_Card_Catalog
         /// </remarks>
         public void Load(string path, IFormatter formatter)
         {
+            FileStream readerFileStream;
 
             if (File.Exists(path))
             {
-                 try
-                {
-                    FileStream readerFileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
-                    this.books = (List<Book>)formatter.Deserialize(readerFileStream);
-                    readerFileStream.Close();
 
+                try
+                {
+                    using (readerFileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        this.books = (List<Book>)formatter.Deserialize(readerFileStream);
+                        readerFileStream.Close();
+                    }
                     Console.WriteLine("{0} successfully loaded", this._fileName);
 
                 }
@@ -121,21 +169,20 @@ namespace Library_Card_Catalog
                 }
 
             }
-            else
+            else 
             {
                 try
                 {
-                    FileStream s = new FileStream(path, FileMode.CreateNew);
-                    s.Close();
+                    using (readerFileStream = new FileStream(path, FileMode.CreateNew))
+                    {
+                        readerFileStream.Close();
+                    }
                 }
                 catch (IOException e)
                 {
                     Console.WriteLine("Error creating a new empty file.\nMessage: {0}", e.Message);
                 }
-
             }
-
         }
-
     }
 }
